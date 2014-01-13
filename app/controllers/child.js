@@ -26,9 +26,20 @@ var options = {
                 }
 }
 
+
+var parser = require('libxml-to-js');
+
+var Client = require('node-rest-client').Client;
+
+
+
+
+
+
 function getLinks(url,cb)
 {
  
+
     request(url, function(err, resp, body){
         if(err)
         {
@@ -36,11 +47,26 @@ function getLinks(url,cb)
             cb(err,null)
             return;
         }
+        /*
 linkscrape(url, body, function(links, $){
 	links.push({link:url});
 cb(null,links)
 })
+*/
+
+parser(body, function (error, result) {
+    if (error) {
+        console.error(error);
+                cb(error,null);
+
+    } else {
+        cb(null,result.url);
+    }
+});
+
+
 })
+
 }
 
 function makeSnapShot(url,cb)
@@ -125,7 +151,7 @@ console.log('CHILD PRPCESS ' +url)
     return;
     }
 
-var len = links.length < 100 ? links.length : 100;
+var len = links.length < 50 ? links.length : 50;
 async.whilst(
     function () { console.log('CHECK ' + count +' < '+len);return count < len; },
     function (callback) {
@@ -137,7 +163,7 @@ if(links[count] == undefined)
 	callback('error')
 	return;
 }
-    var link = links[count].link;
+    var link = links[count].loc;
 makeSnapShot(link,function(err,image){
 	        console.log('MAKE SNAPSHOT DONE')
 
