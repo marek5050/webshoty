@@ -116,8 +116,7 @@ console.log('CHILD PRPCESS ' +url)
 
 
 
-function go(url)
-{
+
 
  getLinks(url,function(e,links){
     if(e)
@@ -179,24 +178,15 @@ callback()
 
 return;
         }
-        console.log('RECURSE')
-console.log(links.length)
-var l = links.length-1;
-if(links[l].link != undefined && links.length > 10)
-{
-         go(links[l].link);
-}else{
-	endWorker(err,null);
-}
-
-
-     
+          endWorker(err,null)
 
   
     });
   })
-}
-go(url);
+
+
+
+
 
 
 
